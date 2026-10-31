@@ -32,6 +32,7 @@ Options:
   -a, --active                   Instantly capture active screen and copy to clipboard without overlay
   -f, --fullscreen               Instantly capture active screen without opening selection overlay
   -s, --screen-on-empty          Capture entire screen when clicking on empty desktop space
+  -n, --no-notify                Disable desktop notifications
       --no-window                Disable window snapping (region selection only)
       --stroke-color <COLOR>     Overlay border stroke color (hex #RRGGBB or #RRGGBBAA) [default: #89b4faff]
       --dim-color <COLOR>        Overlay dimmed background color (hex #RRGGBB or #RRGGBBAA) [default: #0000008c]
@@ -106,7 +107,17 @@ hyprsnip -o ~/Screenshots/my_screenshot.png -c
 ```
 The screen is captured exactly once, cropped once, and used for both operations.
 
-### 6. Stdout and Unix Pipelines
+### 6. Disabling Desktop Notifications
+Use `-n` or `--no-notify` (alias `--no-notification`) to suppress desktop notifications:
+```bash
+# Copy to clipboard without showing a desktop notification
+hyprsnip -cn
+
+# Fullscreen capture without notifications
+hyprsnip -fn
+```
+
+### 7. Stdout and Unix Pipelines
 Outputs the raw PNG bytes directly to `stdout`:
 ```bash
 # Pipe directly to external tools or clipboard

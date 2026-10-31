@@ -9,6 +9,7 @@ fn test_cli_no_args_defaults_to_saving_in_default_directory() {
     assert!(!cli.clipboard);
     assert!(!cli.stdout);
     assert!(!cli.screen_on_empty);
+    assert!(!cli.no_notify);
     assert!(!cli.no_window);
     assert!(!cli.fullscreen);
     assert!(!cli.active);
@@ -20,6 +21,7 @@ fn test_cli_no_args_defaults_to_saving_in_default_directory() {
     );
     assert!(!plan.clipboard);
     assert!(!plan.stdout);
+    assert!(plan.notify);
 }
 
 #[test]
@@ -145,4 +147,32 @@ fn test_cli_existing_customization_flags_preserved() {
     assert_eq!(cli.dim_color, "#11223344");
     assert_eq!(cli.inside_color, "#55667788");
     assert!(cli.no_rounding);
+}
+
+#[test]
+fn test_cli_no_notify_flags() {
+    let cli = Cli::parse_from(["hyprsnip", "--no-notify"]);
+    assert!(cli.no_notify);
+    let plan = cli.plan_actions();
+    assert!(!plan.notify);
+
+    let cli_short = Cli::parse_from(["hyprsnip", "-n"]);
+    assert!(cli_short.no_notify);
+    assert!(!cli_short.plan_actions().notify);
+
+    let cli_alias = Cli::parse_from(["hyprsnip", "--no-notification"]);
+    assert!(cli_alias.no_notify);
+    assert!(!cli_alias.plan_actions().notify);
+
+    // Chained flags like -cn
+    let cli_chained = Cli::parse_from(["hyprsnip", "-cn"]);
+    assert!(cli_chained.clipboard);
+    assert!(cli_chained.no_notify);
+    let plan_chained = cli_chained.plan_actions();
+    assert!(plan_chained.clipboard);
+    assert!(!plan_chained.notify);
+
+    // Stdout mode always has notify false
+    let cli_stdout = Cli::parse_from(["hyprsnip", "--stdout"]);
+    assert!(!cli_stdout.plan_actions().notify);
 }

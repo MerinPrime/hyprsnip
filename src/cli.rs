@@ -28,6 +28,8 @@ use std::path::PathBuf;
         hyprsnip -c\n  \
         hyprsnip --clipboard\n      \
             Copy screenshot directly to system clipboard (no file saved)\n\n  \
+        hyprsnip -cn\n      \
+            Copy screenshot directly to system clipboard without notifications\n\n  \
         hyprsnip -o ~/Screenshots/test.png -c\n      \
             Save to file and copy to clipboard simultaneously\n\n  \
         hyprsnip --stdout | wl-copy\n      \
@@ -76,6 +78,14 @@ pub struct Cli {
     )]
     pub screen_on_empty: bool,
 
+    #[arg(
+        short = 'n',
+        long = "no-notify",
+        alias = "no-notification",
+        help = "Disable desktop notifications"
+    )]
+    pub no_notify: bool,
+
     #[arg(long, help = "Disable window snapping (region selection only)")]
     pub no_window: bool,
 
@@ -113,6 +123,7 @@ pub struct ActionPlan {
     pub save_path: Option<PathBuf>,
     pub clipboard: bool,
     pub stdout: bool,
+    pub notify: bool,
 }
 
 impl Cli {
@@ -134,6 +145,7 @@ impl Cli {
             },
             clipboard,
             stdout: self.stdout,
+            notify: !self.no_notify && !self.stdout,
         }
     }
 }

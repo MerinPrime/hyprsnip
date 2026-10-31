@@ -1,6 +1,6 @@
 pkgname=hyprsnip
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Fast, predictable screenshot utility for Hyprland with window snapping and rounded corner support"
 arch=('x86_64' 'aarch64')
 url="https://github.com/MerinPrime/hyprsnip"

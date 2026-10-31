@@ -207,23 +207,29 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
                     "Screenshot saved to {} and copied to clipboard.",
                     path.display()
                 );
-                send_notification(
-                    "Screenshot saved and copied",
-                    &format!("Saved to {}", path.display()),
-                    Some(path),
-                );
+                if plan.notify {
+                    send_notification(
+                        "Screenshot saved and copied",
+                        &format!("Saved to {}", path.display()),
+                        Some(path),
+                    );
+                }
             }
             (Some(path), false) => {
                 println!("Screenshot saved to {}.", path.display());
-                send_notification(
-                    "Screenshot saved",
-                    &format!("Saved to {}", path.display()),
-                    Some(path),
-                );
+                if plan.notify {
+                    send_notification(
+                        "Screenshot saved",
+                        &format!("Saved to {}", path.display()),
+                        Some(path),
+                    );
+                }
             }
             (None, true) => {
                 println!("Screenshot copied to clipboard.");
-                send_notification("Screenshot copied", "Screenshot copied to clipboard.", None);
+                if plan.notify {
+                    send_notification("Screenshot copied", "Screenshot copied to clipboard.", None);
+                }
             }
             (None, false) => {}
         }
